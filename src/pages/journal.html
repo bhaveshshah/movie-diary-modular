@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Media Diary</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+
+  <body class="bg-gradient-to-b from-gray-900 via-gray-800 to-black">
+    <nav
+      class="relative after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10"
+    >
+      <div class="mx-auto max-w-15xl px-2 sm:px-6 lg:px-8">
+        <div class="relative flex h-16 items-center justify-between">
+          <div
+            class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start"
+          >
+            <div class="flex shrink-0 items-center text-gray-200">
+              <i class="fa-solid fa-film text-2xl text-gray-200"></i>
+              &nbsp; Playcine
+            </div>
+            <div class="hidden sm:ml-6 sm:block">
+              <div class="flex space-x-4">
+                <a
+                  href="/index.html"
+                  class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white"
+                  >Home</a
+                >
+                <a
+                  href="#"
+                  aria-current="page"
+                  class="rounded-md bg-gray-950/50 px-3 py-2 text-sm font-medium text-white"
+                  >Journal</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <section class="relative pb-20 flex items-start overflow-hidden" id="hero">
+      <div
+        class="absolute inset-0 bg-cover bg-center filter brightness-50 main-background"
+      ></div>
+      <div class="z-10 text-center w-full mt-10">
+        <p class="text-lg md:text-2xl text-gray-100 mb-8">
+          Your ultimate media diary for movies and TV shows.
+        </p>
+        <input
+          id="search-textbox"
+          type="text"
+          placeholder="Search for movies or TV shows..."
+          class="border-4 border-sky-500 w-1/2 p-3 rounded-full focus:border-pink-600 text-white"
+        />
+      </div>
+    </section>
+
+    <!-- Cards container section -->
+    <section id="favorite-movies-block" class="w-full my-10">
+      <h2 class="text-lg md:text-3xl text-gray-100 mb-8 text-center">
+        Favorite Movies
+      </h2>
+
+      <div class="relative max-w-6xl mx-auto">
+        <!-- Left Arrow -->
+        <button
+          class="prev-btn absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-black/60 hover:bg-black/80 text-white p-3 rounded-full"
+        >
+          ◀
+        </button>
+
+        <!-- Slider -->
+        <div
+          id="favorite-movies-card-container"
+          class="flex-nowrap movie-slider flex gap-4 px-4 overflow-x-auto overflow-y-hidden scroll-smooth"
+        >
+          <!-- cards will be inserted here -->
+        </div>
+
+        <!-- Right Arrow -->
+        <button
+          class="next-btn absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-black/60 hover:bg-black/80 text-white p-3 rounded-full"
+        >
+          ▶
+        </button>
+      </div>
+    </section>
+
+    <!-- Notes Modal -->
+    <div
+      id="notes-modal"
+      class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+    >
+      <div class="bg-gray-800 rounded-lg max-w-2xl w-full p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-2xl text-white" id="modal-movie-title"></h3>
+          <button
+            onclick="closeNotesModal()"
+            class="close-modal-btn text-gray-400 hover:text-white text-3xl leading-none"
+            aria-label="Close modal"
+          >
+            ×
+          </button>
+        </div>
+
+        <textarea
+          id="movie-notes"
+          class="w-full h-40 bg-gray-700 text-white p-4 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Add your notes about this movie..."
+        ></textarea>
+
+        <div class="flex gap-3 mt-4">
+          <button
+            onclick="saveNotes()"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
+          >
+            Save
+          </button>
+          <button
+            onclick="closeNotesModal()"
+            class="close-modal-btn bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-lg transition-colors"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- End of cards container section -->
+    <script src="journal.js" type="module"></script>
+  </body>
+</html>
