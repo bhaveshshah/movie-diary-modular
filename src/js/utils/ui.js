@@ -1,5 +1,5 @@
-import { isFavourite, toggleFavoriteMovie } from "./localstorage";
-import { getData, setData } from "./localstorage";
+import { isFavourite, toggleFavoriteMovie } from "./localstorage.js";
+import { getData, setData } from "./localstorage.js";
 
 // Function to update favorite button state
 
