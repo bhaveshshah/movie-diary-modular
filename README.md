@@ -6,14 +6,14 @@ A vanilla JavaScript movie browsing application powered by The Movie Database (T
 
 - Browse popular and trending movies
 - Search movies by title
-- View detailed movie information
+- View movie information
 - Responsive design
 - Fast development with Parcel bundler
 
 ## Tech Stack
 
 - **Vanilla JavaScript** (ES6 modules)
-- **HTML5 & CSS3**
+- **HTML5 & Tailwind**
 - **Parcel** - Zero-config bundler
 - **TMDB API** - Movie data provider
 
