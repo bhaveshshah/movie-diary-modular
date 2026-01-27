@@ -9,7 +9,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="../styles/styles.css" />
+    <link rel="stylesheet" href="/styles.css" />
   </head>
   <body class="bg-gradient-to-b from-gray-900 via-gray-800 to-black">
     <nav
@@ -32,11 +32,11 @@
                   class="rounded-md bg-gray-950/50 px-3 py-2 text-sm font-medium text-white"
                   >Home</a
                 >
-                <!-- <a
+                <a
                   href="./src/pages/journal/journal.html"
                   class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white"
                   >Journal</a
-                > -->
+                >
               </div>
             </div>
           </div>
@@ -78,11 +78,10 @@
         Popular Movies
       </h2>
 
-      <div class="relative max-w-6xl mx-auto px-8">
+      <div class="relative max-w-6xl mx-auto">
         <!-- Left Arrow -->
         <button
-          class="prev-btn absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-black/70 hover:bg-black/90 text-white p-3 md:p-4 rounded-full transition-all duration-200 hover:scale-110 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-          aria-label="Previous movies"
+          class="prev-btn absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-black/60 hover:bg-black/80 text-white p-3 rounded-full"
         >
           ◀
         </button>
@@ -90,16 +89,14 @@
         <!-- Slider -->
         <div
           id="popular-movies-card-container"
-          class="flex flex-nowrap items-baseline gap-4 px-12 md:px-16 overflow-x-auto overflow-y-hidden scroll-smooth no-scrollbar snap-x snap-mandatory"
+          class="flex-nowrap movie-slider flex gap-4 px-4 overflow-x-auto overflow-y-hidden scroll-smooth"
         >
           <!-- cards will be inserted here -->
-          <!-- Add snap-start to each card element -->
         </div>
 
         <!-- Right Arrow -->
         <button
-          class="next-btn absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-black/70 hover:bg-black/90 text-white p-3 md:p-4 rounded-full transition-all duration-200 hover:scale-110 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-          aria-label="Next movies"
+          class="next-btn absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-black/60 hover:bg-black/80 text-white p-3 rounded-full"
         >
           ▶
         </button>
@@ -122,7 +119,7 @@
         <!-- Slider -->
         <div
           id="latest-release-card-container"
-          class="flex flex-nowrap items-baseline gap-4 px-12 md:px-16 overflow-x-auto overflow-y-hidden scroll-smooth no-scrollbar snap-x snap-mandatory"
+          class="flex-nowrap movie-slider flex gap-4 px-4 overflow-x-auto overflow-y-hidden scroll-smooth"
         >
           <!-- cards will be inserted here -->
         </div>
@@ -152,7 +149,7 @@
         <!-- Slider -->
         <div
           id="all-movies-card-container"
-          class="flex flex-nowrap items-baseline gap-4 px-12 md:px-16 overflow-x-auto overflow-y-hidden scroll-smooth no-scrollbar snap-x snap-mandatory"
+          class="flex-nowrap movie-slider flex gap-4 px-4 overflow-x-auto overflow-y-hidden scroll-smooth"
         >
           <!-- cards will be inserted here -->
         </div>
@@ -165,44 +162,7 @@
         </button>
       </div>
     </section>
-
-    <!-- Notes Modal -->
-    <div
-      id="notes-modal"
-      class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
-    >
-      <div class="bg-gray-800 rounded-lg max-w-2xl w-full p-6">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-2xl text-white" id="modal-movie-title"></h3>
-          <button
-            class="close-modal-btn text-gray-400 hover:text-white text-3xl leading-none"
-            aria-label="Close modal"
-          >
-            ×
-          </button>
-        </div>
-
-        <textarea
-          id="movie-notes"
-          class="w-full h-40 bg-gray-700 text-white p-4 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Add your notes about this movie..."
-        ></textarea>
-
-        <div class="flex gap-3 mt-4">
-          <button
-            class="save-notes-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
-          >
-            Save
-          </button>
-          <button
-            class="close-modal-btn bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-lg transition-colors"
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
-    </div>
     <!-- End of cards container section -->
-    <script src="../js/index.js" type="module"></script>
+    <script src="src/js/pages/index.js" type="module"></script>
   </body>
 </html>

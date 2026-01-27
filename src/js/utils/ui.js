@@ -1,6 +1,8 @@
-import { isFavourite, toggleFavoriteMovie, addNotes } from "./localstorage.js";
+import { isFavourite, toggleFavoriteMovie } from "./localstorage";
+import { getData, setData } from "./localstorage";
 
-let currentSelectedMovie;
+// Function to update favorite button state
+
 function renderFavState(button, movieId) {
   if (isFavourite(movieId)) {
     button.classList.add("text-red-500");
@@ -11,120 +13,22 @@ function renderFavState(button, movieId) {
   }
 }
 
-/**
- * function to create the movie card
- */
+// Function to create and append the movie cards to the specified containers on the main page
+
 export function createMovieCard(movie, containerId) {
   const movieCard = document.createElement("div");
   movieCard.classList.add(
-    "bg-white",
-    "rounded-lg",
-    "shadow-md",
-    "p-4",
-    "min-w-[200px]",
-    "w-[200px]",
-    "hover:scale-105",
-    "transition-transform",
-    "duration-300",
-    "relative",
+    'bg-white',
+    'rounded-lg',
+    'shadow-md',
+    'min-w-[300px]',
+    'w-[300px]',
+    'hover:scale-105',
+    'transition-transform',
+    'duration-300',
+    'relative'
   );
 
-  movieCard.appendChild(createMoviePoster(movie));
-  movieCard.appendChild(getMovieTitle(movie));
-  movieCard.appendChild(createMovieInfo(movie));
-  movieCard.appendChild(createFavButton(movie));
-  movieCard.appendChild(createNotesButton(movie));
-  document.getElementById(containerId).appendChild(movieCard);
-}
-
-function openNotesModal(movie) {
-  currentSelectedMovie = movie;
-  const modal = document.getElementById("notes-modal");
-  const titleElement = document.getElementById("modal-movie-title");
-  const notesTextarea = document.getElementById("movie-notes");
-
-  // Set movie title
-  titleElement.textContent = movie.title;
-
-  // Load existing notes
-  const existingNotes = localStorage.getItem(`movie-notes-${movie.id}`) || "";
-  notesTextarea.value = existingNotes;
-
-  // Show modal
-  modal.classList.remove("hidden");
-
-  // Focus on textarea
-  notesTextarea.focus();
-}
-
-function createNotesButton(movie) {
-  const notesButton = document.createElement("button");
-  notesButton.innerHTML = `
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-        </svg>
-    `;
-  notesButton.classList.add(
-    "absolute",
-    "bottom-2",
-    "right-2",
-    "bg-blue-400",
-    "hover:bg-blue-700",
-    "text-white",
-    "w-9",
-    "h-9",
-    "rounded-full",
-    "flex",
-    "items-center",
-    "justify-center",
-    "transition-all",
-    "z-20",
-  );
-  notesButton.setAttribute("aria-label", "Add notes");
-  notesButton.dataset.movieId = movie.id;
-  notesButton.dataset.movieTitle = movie.title || movie.name;
-
-  // ✅ NEW: Add click event to open notes modal
-  notesButton.addEventListener("click", () => {
-    openNotesModal(movie);
-  });
-
-  document.querySelectorAll(".close-modal-btn").forEach((button) => {
-    button.addEventListener("click", closeNotesModal);
-  });
-
-  const modal = document.getElementById("notes-modal");
-
-  // Event delegation - one listener for the entire modal
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      closeNotesModal();
-      return;
-    }
-
-    if (e.target.closest(".close-modal-btn")) {
-      closeNotesModal();
-      return;
-    }
-
-    // Handle save button
-    if (e.target.closest(".save-notes-btn")) {
-      const textData = document.getElementById("movie-notes").value;
-      addNotes(movie, textData);
-      return;
-    }
-  });
-
-  // ✅ NEW: Show indicator if notes exist
-  const hasNotes = localStorage.getItem(`movie-notes-${movie.id}`);
-  if (hasNotes) {
-    notesButton.classList.add("ring-2", "ring-yellow-400");
-  }
-
-  return notesButton;
-}
-
-function createFavButton(movie) {
   const favButton = document.createElement("button");
   favButton.innerHTML = "♡";
   favButton.classList.add(
@@ -151,7 +55,6 @@ function createFavButton(movie) {
 
   // Add click event to toggle favorite
   favButton.addEventListener("click", () => {
-    debugger;
     toggleFavoriteMovie(movie);
 
     document
@@ -159,36 +62,111 @@ function createFavButton(movie) {
       .forEach((btn) => renderFavState(btn, movie.id));
   });
 
-  return favButton;
-}
-
-function closeNotesModal() {
-  const modal = document.getElementById("notes-modal");
-  modal.classList.add("hidden");
-  currentSelectedMovie = null;
-}
-
-function getMovieTitle({ title, name }) {
-  const movieName = document.createElement("h3");
-  movieName.textContent = title || name || "No Name Found";
-  movieName.classList.add("text-x", "font-bold");
-
-  return movieName;
-}
-
-function createMovieInfo({ popularity, overview }) {
-  const movieInfo = document.createElement("p");
-  movieInfo.textContent = `Popularity rate: ${popularity}, Synopsis: ${overview}`; // info(movie);
-  movieInfo.classList.add("text-gray-500", "text-sm", "line-clamp-3");
-
-  return movieInfo;
-}
-
-function createMoviePoster({ title, poster_path }) {
   const movieImage = document.createElement("img");
-  movieImage.src = `https://image.tmdb.org/t/p/w500${poster_path}`;
-  movieImage.alt = title;
-  movieImage.classList.add("mb-2");
+  movieImage.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+  movieImage.alt = movie.title;
+  movieImage.classList.add("mb-2", "rounded", "aspect-[2/3]", "w-full", "object-cover");
 
-  return movieImage;
+  const movieName = document.createElement("h3");
+  movieName.textContent = movie.title || movie.name || "undefined";
+  movieName.classList.add("text-xl", "font-bold", "p-4");
+
+  const movieInfo = document.createElement("p");
+  movieInfo.textContent = `Popularity rate: ${movie.popularity}, Synopsis: ${movie.overview}`; // info(movie);
+  movieInfo.classList.add("text-gray-500", "text-sm", "line-clamp-3", "p-4");
+
+  movieCard.appendChild(movieImage);
+  movieCard.appendChild(movieName);
+  movieCard.appendChild(movieInfo);
+  movieCard.appendChild(favButton);
+  document.getElementById(containerId).appendChild(movieCard);
 }
+
+
+//Function to create and append the movie cards on journal page with a section to submit notes
+
+export function createFavMovieCard(movie, containerId) {
+  const movieCard = document.createElement("div");
+  movieCard.classList.add(
+    "bg-white",
+    "rounded-lg",
+    "shadow-md",
+    "p-4",
+    "w-full",
+    "sm:w-[340px]",   
+    "md:w-[400px]",   
+    "lg:w-[480px]",  
+    "xl:w-[520px]",
+    "flex",
+    "gap-4"
+  );
+
+  /* ---------- LEFT SIDE ---------- */
+  const leftSection = document.createElement("div");
+  leftSection.classList.add("w-1/3", "flex", "flex-col");
+
+  const movieImage = document.createElement("img");
+  movieImage.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+  movieImage.alt = movie.title || movie.name;
+  movieImage.classList.add("mb-2", "rounded", "aspect-[2/3]", "w-full", "object-cover");
+
+  const movieName = document.createElement("h3");
+  movieName.textContent = movie.title || movie.name || "Untitled";
+  movieName.classList.add("text-xl", "font-bold", "mb-2");
+
+  const synopsis = document.createElement("p");
+  synopsis.textContent = movie.overview || "No synopsis available.";
+  synopsis.classList.add("text-sm", "text-gray-600");
+
+  leftSection.append(movieImage, movieName, synopsis);
+
+  /* ---------- RIGHT SIDE ---------- */
+  const rightSection = document.createElement("div");
+  rightSection.classList.add("md:w-2/3", "w-full", "flex", "flex-col");
+
+  const notesLabel = document.createElement("label");
+  notesLabel.textContent = "Your Notes:";
+  notesLabel.classList.add("font-medium", "mb-1");
+
+  const notesTextarea = document.createElement("textarea");
+  notesTextarea.placeholder = "Write your notes here...";
+  notesTextarea.classList.add(
+    "flex-grow",
+    "p-2",
+    "border",
+    "border-gray-300",
+    "rounded",
+    "resize-none",
+    "mb-2"
+  );
+
+  const submitButton = document.createElement("button");
+  submitButton.textContent = "Save Notes";
+  submitButton.classList.add(
+    "bg-gray-800",
+    "text-white",
+    "py-2",
+    "rounded",
+    "hover:bg-gray-600",
+    "transition"
+  );
+
+  submitButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        const note = notesTextarea.value.trim();
+        const FAVOURITE_KEY = "favourite";
+        const favouriteMovies = getData(FAVOURITE_KEY);
+        if (!note) return;
+
+        favouriteMovies.push(note);                     // add new note
+        setData(FAVOURITE_KEY, favouriteMovies);        // save back
+        submitButton.textContent = "Notes added!";
+
+    });
+
+  rightSection.append(notesLabel, notesTextarea, submitButton);
+
+  /* ---------- ASSEMBLE ---------- */
+  movieCard.append(leftSection, rightSection);
+  document.getElementById(containerId).appendChild(movieCard);
+};
