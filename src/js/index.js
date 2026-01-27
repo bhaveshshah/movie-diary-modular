@@ -2,8 +2,8 @@ import {
   getAllMovies,
   getPopularOrLatestMovies,
   searchMovies,
-} from "../utils/api.js";
-import { createMovieCard } from "../utils/ui.js";
+} from "./utils/api.js";
+import { createMovieCard } from "./utils/ui.js";
 
 const MOVIE_SECTIONS = [
   {
