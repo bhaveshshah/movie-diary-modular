@@ -10,7 +10,7 @@ export function getData(key) {
   }
 }
 
-function setData(key, data) {
+export function setData(key, data) {
   try {
     localStorage.setItem(key, JSON.stringify(data));
   } catch (error) {
@@ -37,16 +37,6 @@ export function toggleFavoriteMovie(movie) {
   }
 
   setData(FAVOURITE_KEY, favouriteMovies);
-}
-
-export function addNotes(movie, notes) {
-  if (notes) {
-    this.toggleFavoriteMovie(movie);
-
-    // need to implement notes storage
-  } else {
-    console.log("No notes to add");
-  }
 }
 
 export function isFavourite(id) {

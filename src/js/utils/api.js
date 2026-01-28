@@ -1,5 +1,5 @@
 const BASE_URL = "https://api.themoviedb.org";
-const API_KEY = "0b37274a8eda9675e69d6c9c858e2f76";
+const API_KEY = "API_KEY";
 let debounceTimer; // for now, added here later would add to the specific place and pass this as a param.
 
 async function fetchFromAPI(endpoint, params = {}) {
