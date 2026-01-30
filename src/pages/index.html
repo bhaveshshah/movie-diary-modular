@@ -33,7 +33,7 @@
                   >Home</a
                 >
                 <a
-                  href="./src/pages/journal/journal.html"
+                  href="./journal.html"
                   class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white"
                   >Journal</a
                 >
@@ -43,20 +43,66 @@
         </div>
       </div>
     </nav>
-    <section class="relative pb-20 flex items-start overflow-hidden" id="hero">
+    <section class="relative pb-20 flex items-start overflow-visible" id="hero">
       <div
-        class="absolute inset-0 bg-cover bg-center filter brightness-50 main-background"
+        class="absolute inset-0 bg-cover bg-center filter brightness-50"
       ></div>
       <div class="z-10 text-center w-full mt-10">
         <p class="text-lg md:text-2xl text-gray-100 mb-8">
-          Your ultimate media diary for movies and TV shows.
+          Find your favorite movies instantly...
         </p>
-        <input
-          id="search-textbox"
-          type="text"
-          placeholder="Search for movies or TV shows..."
-          class="border-4 border-sky-500 w-1/2 p-3 rounded-full focus:border-pink-600 text-white"
-        />
+        <div class="relative w-full max-w-4xl mx-auto isolate">
+          <div class="relative">
+            <input
+              id="search-textbox"
+              type="text"
+              placeholder="Search for movies or TV shows..."
+              class="w-full px-4 py-3 pl-12 text-gray-200 placeholder-gray-500 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-500"
+              autocomplete="off"
+            />
+            <svg
+              class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              ></path>
+            </svg>
+
+            <!-- Clear Button (hidden by default) -->
+            <button
+              id="clear-search"
+              class="hidden absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-100 hover:text-gray-400 transition"
+              aria-label="Clear search"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </button>
+          </div>
+          <!-- Autocomplete Results Dropdown -->
+          <ul
+            id="search-results"
+            class="hidden absolute z-9999 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg max-h-96 overflow-y-auto"
+          >
+            <!-- Results will be dynamically inserted here -->
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -78,10 +124,10 @@
         Popular Movies
       </h2>
 
-      <div class="relative max-w-6xl mx-auto">
+      <div class="relative max-w-8xl mx-auto">
         <!-- Left Arrow -->
         <button
-          class="prev-btn absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-black/60 hover:bg-black/80 text-white p-3 rounded-full"
+          class="prev-btn absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/40 hover:bg-black/80 text-white p-4 rounded-full text-xl"
         >
           ◀
         </button>
@@ -89,14 +135,14 @@
         <!-- Slider -->
         <div
           id="popular-movies-card-container"
-          class="flex-nowrap movie-slider flex gap-4 px-4 overflow-x-auto overflow-y-hidden scroll-smooth"
+          class="flex-nowrap movie-slider flex gap-4 px-4 overflow-x-auto overflow-y-hidden scroll-smooth no-scrollbar"
         >
           <!-- cards will be inserted here -->
         </div>
 
         <!-- Right Arrow -->
         <button
-          class="next-btn absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-black/60 hover:bg-black/80 text-white p-3 rounded-full"
+          class="next-btn absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/40 hover:bg-black/80 text-white p-4 rounded-full text-xl"
         >
           ▶
         </button>
@@ -108,10 +154,10 @@
         Latest Releases
       </h2>
 
-      <div class="relative max-w-6xl mx-auto">
+      <div class="relative max-w-8xl mx-auto">
         <!-- Left Arrow -->
         <button
-          class="prev-btn absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-black/60 hover:bg-black/80 text-white p-3 rounded-full"
+          class="prev-btn absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/40 hover:bg-black/80 text-white p-4 rounded-full text-xl"
         >
           ◀
         </button>
@@ -119,14 +165,14 @@
         <!-- Slider -->
         <div
           id="latest-release-card-container"
-          class="flex-nowrap movie-slider flex gap-4 px-4 overflow-x-auto overflow-y-hidden scroll-smooth"
+          class="flex-nowrap movie-slider flex gap-2 px-4 overflow-x-auto overflow-y-hidden scroll-smooth no-scrollbar"
         >
           <!-- cards will be inserted here -->
         </div>
 
         <!-- Right Arrow -->
         <button
-          class="next-btn absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-black/60 hover:bg-black/80 text-white p-3 rounded-full"
+          class="next-btn absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/40 hover:bg-black/80 text-white p-4 rounded-full text-xl"
         >
           ▶
         </button>
@@ -138,25 +184,24 @@
         All Movies
       </h2>
 
-      <div class="relative max-w-6xl mx-auto">
+      <div class="relative max-w-8xl mx-auto">
         <!-- Left Arrow -->
         <button
-          class="prev-btn absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-black/60 hover:bg-black/80 text-white p-3 rounded-full"
+          class="prev-btn absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/40 hover:bg-black/80 text-white p-4 rounded-full text-xl"
         >
           ◀
         </button>
-
         <!-- Slider -->
         <div
           id="all-movies-card-container"
-          class="flex-nowrap movie-slider flex gap-4 px-4 overflow-x-auto overflow-y-hidden scroll-smooth"
+          class="flex-nowrap movie-slider flex gap-4 px-4 overflow-x-auto overflow-y-hidden scroll-smooth no-scrollbar"
         >
           <!-- cards will be inserted here -->
         </div>
 
         <!-- Right Arrow -->
         <button
-          class="next-btn absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-black/60 hover:bg-black/80 text-white p-3 rounded-full"
+          class="next-btn absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/40 hover:bg-black/80 text-white p-4 rounded-full text-xl"
         >
           ▶
         </button>

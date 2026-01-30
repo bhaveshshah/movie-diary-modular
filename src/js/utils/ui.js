@@ -1,8 +1,16 @@
-import { isFavourite, toggleFavoriteMovie } from "./localstorage.js";
+import {
+  isFavourite,
+  toggleFavoriteMovie,
+  FAVOURITE_KEY,
+} from "./localstorage.js";
 import { getData, setData } from "./localstorage.js";
 
-// Function to update favorite button state
-
+/**
+ * Update a favorite button's visual state.
+ * @param {HTMLButtonElement} button - The favorite button element.
+ * @param {number} movieId - The movie id.
+ * @returns {void}
+ */
 function renderFavState(button, movieId) {
   if (isFavourite(movieId)) {
     button.classList.add("text-red-500");
@@ -15,6 +23,18 @@ function renderFavState(button, movieId) {
 
 // Function to create and append the movie cards to the specified containers on the main page
 
+/**
+ * Create and append a movie card to a container.
+ * @param {Object} movie - Movie data for the card.
+ * @param {number} movie.id - The movie id.
+ * @param {string} [movie.title] - The movie title.
+ * @param {string} [movie.name] - Alternative movie name.
+ * @param {string} movie.poster_path - Poster path.
+ * @param {string} [movie.overview] - Movie overview.
+ * @param {number} [movie.popularity] - Popularity score.
+ * @param {string} containerId - DOM element id to append into.
+ * @returns {void}
+ */
 export function createMovieCard(movie, containerId) {
   const movieCard = document.createElement("div");
   movieCard.classList.add(
@@ -65,7 +85,13 @@ export function createMovieCard(movie, containerId) {
   const movieImage = document.createElement("img");
   movieImage.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
   movieImage.alt = movie.title;
-  movieImage.classList.add("mb-2", "rounded", "aspect-[2/3]", "w-full", "object-cover");
+  movieImage.classList.add(
+    "mb-2",
+    "rounded",
+    "aspect-[2/3]",
+    "w-full",
+    "object-cover",
+  );
 
   const movieName = document.createElement("h3");
   movieName.textContent = movie.title || movie.name || "undefined";
@@ -84,9 +110,20 @@ export function createMovieCard(movie, containerId) {
   document.getElementById(containerId).appendChild(movieCard);
 }
 
-
 //Function to create and append the movie cards on journal page with a section to submit notes
 
+/**
+ * Create and append a favourite movie card with notes.
+ * @param {Object} movie - Movie data for the card.
+ * @param {number} movie.id - The movie id.
+ * @param {string} [movie.title] - The movie title.
+ * @param {string} [movie.name] - Alternative movie name.
+ * @param {string} movie.poster_path - Poster path.
+ * @param {string} [movie.overview] - Movie overview.
+ * @param {string} [movie.note] - Saved note for the movie.
+ * @param {string} containerId - DOM element id to append into.
+ * @returns {void}
+ */
 export function createFavMovieCard(movie, containerId) {
   const movieCard = document.createElement("div");
   movieCard.classList.add(
@@ -94,9 +131,9 @@ export function createFavMovieCard(movie, containerId) {
     "rounded-lg",
     "p-4",
     "w-full",
-    "sm:w-[340px]",   
-    "md:w-[400px]",   
-    "lg:w-[480px]",  
+    "sm:w-[340px]",
+    "md:w-[400px]",
+    "lg:w-[480px]",
     "xl:w-[520px]",
     "flex",
     "gap-4",
@@ -109,7 +146,13 @@ export function createFavMovieCard(movie, containerId) {
   const movieImage = document.createElement("img");
   movieImage.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
   movieImage.alt = movie.title || movie.name;
-  movieImage.classList.add("mb-2", "rounded", "aspect-[2/3]", "w-full", "object-cover");
+  movieImage.classList.add(
+    "mb-2",
+    "rounded",
+    "aspect-[2/3]",
+    "w-full",
+    "object-cover",
+  );
 
   const movieName = document.createElement("h3");
   movieName.textContent = movie.title || movie.name || "Untitled";
@@ -131,6 +174,7 @@ export function createFavMovieCard(movie, containerId) {
 
   const notesTextarea = document.createElement("textarea");
   notesTextarea.placeholder = "Write your notes here...";
+  notesTextarea.innerText = movie.note ? movie.note : "";
   notesTextarea.classList.add(
     "flex-grow",
     "p-2",
@@ -138,7 +182,7 @@ export function createFavMovieCard(movie, containerId) {
     "border-gray-300",
     "rounded",
     "resize-none",
-    "mb-2"
+    "mb-2",
   );
 
   const submitButton = document.createElement("button");
@@ -149,25 +193,32 @@ export function createFavMovieCard(movie, containerId) {
     "py-2",
     "rounded",
     "hover:bg-gray-600",
-    "transition"
+    "transition",
   );
 
   submitButton.addEventListener("click", (e) => {
-        e.preventDefault();
-        const note = notesTextarea.value.trim();
-        const FAVOURITE_KEY = "favourite";
-        const favouriteMovies = getData(FAVOURITE_KEY);
-        if (!note) return;
+    e.preventDefault();
+    const note = notesTextarea.value.trim();
 
-        favouriteMovies.push(note);                     // add new note
-        setData(FAVOURITE_KEY, favouriteMovies);        // save back
-        submitButton.textContent = "Notes added!";
+    const favData = getData(FAVOURITE_KEY);
 
-    });
+    const favIndex = favData.findIndex((fav) => fav.id === movie.id);
+
+    if (favIndex !== -1) {
+      // Update the item at that index
+      favData[favIndex] = {
+        ...favData[favIndex],
+        note,
+      };
+    }
+
+    setData(FAVOURITE_KEY, [...favData]);
+    submitButton.textContent = "Notes added!";
+  });
 
   rightSection.append(notesLabel, notesTextarea, submitButton);
 
   /* ---------- ASSEMBLE ---------- */
   movieCard.append(leftSection, rightSection);
   document.getElementById(containerId).appendChild(movieCard);
-};
+}

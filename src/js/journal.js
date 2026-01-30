@@ -2,8 +2,10 @@
 import { getFavouriteMovies } from "./utils/localstorage.js";
 import { createFavMovieCard } from "./utils/ui.js";
 
-// Initialize favorite movies section on DOM load
-
+/**
+ * Initialize favourite movies section on DOM load.
+ * @returns {void}
+ */
 document.addEventListener("DOMContentLoaded", async () => {
   const favoriteMovies = getFavouriteMovies();
 
