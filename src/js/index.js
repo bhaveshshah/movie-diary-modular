@@ -6,6 +6,10 @@ import {
 } from "./utils/api.js";
 import { createMovieCard } from "./utils/ui.js";
 
+/**
+ * Movie sections and their fetch configuration.
+ * @type {{blockId: string, fetchFunction: () => Promise<Object>, containerId: string}[]}
+ */
 const MOVIE_SECTIONS = [
   {
     blockId: "popular-movies-block",
@@ -24,11 +28,21 @@ const MOVIE_SECTIONS = [
   },
 ];
 
+/**
+ * Search section configuration.
+ * @type {{blockId: string, containerId: string}}
+ */
 const SEARCH_SECTION = {
   blockId: "search-results-block",
   containerId: "search-results-card-container",
 };
 
+/**
+ * Render movies into a container using a fetch function.
+ * @param {() => Promise<Object>} fetchFn - Fetch function returning movie data.
+ * @param {string} containerId - Target container id.
+ * @returns {Promise<void>}
+ */
 async function renderMovies(fetchFn, containerId) {
   const container = document.getElementById(containerId);
   if (!container) {
@@ -54,6 +68,11 @@ async function renderMovies(fetchFn, containerId) {
   }
 }
 
+/**
+ * Handle search input and render results.
+ * @param {string} query - Search query string.
+ * @returns {void}
+ */
 function handleSearch(query) {
   const trimmerQuery = query.trim();
   const searchResults = document.getElementById("search-results");
@@ -105,6 +124,10 @@ function handleSearch(query) {
   }
 }
 
+/**
+ * Initialize UI bindings and render movie sections on page load.
+ * @returns {void}
+ */
 document.addEventListener("DOMContentLoaded", async () => {
   document
     .getElementById("search-textbox")
@@ -121,6 +144,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 /// Function for the slider arrows
 
+/**
+ * Wire up slider arrow controls for each section.
+ * @returns {void}
+ */
 document.querySelectorAll("section").forEach((section) => {
   const container = section.querySelector(".overflow-x-auto");
   const prevBtn = section.querySelector(".prev-btn");
@@ -139,6 +166,11 @@ document.querySelectorAll("section").forEach((section) => {
   });
 });
 
+/**
+ * Create the HTML string for search results.
+ * @param {Array} movies - List of movie objects.
+ * @returns {string} HTML string for the results list.
+ */
 function createSearchElement(movies) {
   return movies
     .map(
@@ -174,6 +206,11 @@ function createSearchElement(movies) {
     .join("");
 }
 
+/**
+ * Toggle visibility of the search block and movie sections.
+ * @param {boolean} showSearch - Whether to show the search section.
+ * @returns {void}
+ */
 function toggleCardVisibility(showSearch) {
   const searchBlock = document.getElementById(SEARCH_SECTION.blockId);
   if (!searchBlock) return;

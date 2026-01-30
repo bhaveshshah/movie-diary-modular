@@ -5,8 +5,12 @@ import {
 } from "./localstorage.js";
 import { getData, setData } from "./localstorage.js";
 
-// Function to update favorite button state
-
+/**
+ * Update a favorite button's visual state.
+ * @param {HTMLButtonElement} button - The favorite button element.
+ * @param {number} movieId - The movie id.
+ * @returns {void}
+ */
 function renderFavState(button, movieId) {
   if (isFavourite(movieId)) {
     button.classList.add("text-red-500");
@@ -19,6 +23,18 @@ function renderFavState(button, movieId) {
 
 // Function to create and append the movie cards to the specified containers on the main page
 
+/**
+ * Create and append a movie card to a container.
+ * @param {Object} movie - Movie data for the card.
+ * @param {number} movie.id - The movie id.
+ * @param {string} [movie.title] - The movie title.
+ * @param {string} [movie.name] - Alternative movie name.
+ * @param {string} movie.poster_path - Poster path.
+ * @param {string} [movie.overview] - Movie overview.
+ * @param {number} [movie.popularity] - Popularity score.
+ * @param {string} containerId - DOM element id to append into.
+ * @returns {void}
+ */
 export function createMovieCard(movie, containerId) {
   const movieCard = document.createElement("div");
   movieCard.classList.add(
@@ -94,6 +110,18 @@ export function createMovieCard(movie, containerId) {
 
 //Function to create and append the movie cards on journal page with a section to submit notes
 
+/**
+ * Create and append a favourite movie card with notes.
+ * @param {Object} movie - Movie data for the card.
+ * @param {number} movie.id - The movie id.
+ * @param {string} [movie.title] - The movie title.
+ * @param {string} [movie.name] - Alternative movie name.
+ * @param {string} movie.poster_path - Poster path.
+ * @param {string} [movie.overview] - Movie overview.
+ * @param {string} [movie.note] - Saved note for the movie.
+ * @param {string} containerId - DOM element id to append into.
+ * @returns {void}
+ */
 export function createFavMovieCard(movie, containerId) {
   const movieCard = document.createElement("div");
   movieCard.classList.add(
