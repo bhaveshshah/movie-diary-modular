@@ -43,7 +43,7 @@ export function createMovieCard(movie, containerId) {
     "shadow-md",
     "min-w-[300px]",
     "w-[300px]",
-    "hover:scale-105",
+    "hover:scale-102",
     "transition-transform",
     "duration-300",
     "relative",
@@ -53,9 +53,9 @@ export function createMovieCard(movie, containerId) {
   favButton.innerHTML = "♡";
   favButton.classList.add(
     "absolute",
-    "top-2",
+    "top-3",
     "right-2",
-    "bg-black/60",
+    "bg-black/40",
     "hover:bg-black/80",
     "text-white",
     "text-xl",
@@ -98,8 +98,16 @@ export function createMovieCard(movie, containerId) {
   movieName.classList.add("text-xl", "font-bold", "p-4");
 
   const movieInfo = document.createElement("p");
-  movieInfo.textContent = `Popularity rate: ${movie.popularity}, Synopsis: ${movie.overview}`; // info(movie);
-  movieInfo.classList.add("text-gray-500", "text-sm", "line-clamp-3", "p-4");
+  movieInfo.innerHTML = `
+  <strong>Popularity rate:</strong> ${movie.popularity}<br>
+  <strong>Synopsis:</strong> ${movie.overview}`; // info(movie);
+  movieInfo.classList.add(
+    "text-gray-700",
+    "text-sm",
+    "line-clamp-3",
+    "p-4",
+    "pt-0",
+  );
 
   movieCard.appendChild(movieImage);
   movieCard.appendChild(movieName);
@@ -125,9 +133,8 @@ export function createMovieCard(movie, containerId) {
 export function createFavMovieCard(movie, containerId) {
   const movieCard = document.createElement("div");
   movieCard.classList.add(
-    "bg-white",
+    "bg-neutral-200",
     "rounded-lg",
-    "shadow-md",
     "p-4",
     "w-full",
     "sm:w-[340px]",
@@ -159,7 +166,7 @@ export function createFavMovieCard(movie, containerId) {
 
   const synopsis = document.createElement("p");
   synopsis.textContent = movie.overview || "No synopsis available.";
-  synopsis.classList.add("text-sm", "text-gray-600");
+  synopsis.classList.add("text-sm", "text-gray-600", "line-clamp-5");
 
   leftSection.append(movieImage, movieName, synopsis);
 

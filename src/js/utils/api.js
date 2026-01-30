@@ -47,7 +47,7 @@ async function fetchFromAPI(endpoint, params = {}, retries = 3) {
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        throw new ApiError(
+        throw new APIError(
           `HTTP: ${response.status}: ${response.statusText}`,
           response.status,
           endpoint,
