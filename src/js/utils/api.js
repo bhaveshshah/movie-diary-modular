@@ -1,79 +1,99 @@
+import { debounce } from "./utils";
 const BASE_URL = "https://api.themoviedb.org";
-const API_KEY = "API_KEY";
-let debounceTimer; // for now, added here later would add to the specific place and pass this as a param.
+const API_KEY = process.env.TMDB_API_KEY;
 
-async function fetchFromAPI(endpoint, params = {}) {
-  try {
-    const queryParams = new URLSearchParams({
-      ...params,
-    });
-    return await fetch(`${BASE_URL}${endpoint}?${queryParams}`);
-  } catch (e) {
-    console.log(`Error fetching API data: ${e}`);
-    throw e;
+class APIError extends Error {
+  constructor(message, statusCode, endpoint) {
+    super(message);
+    this.name = "APIError";
+    this.statusCode = statusCode;
+    this.endpoint = endpoint;
+  }
+}
+
+async function fetchFromAPI(endpoint, params = {}, retries = 3) {
+  const queryParams = new URLSearchParams({
+    api_key: API_KEY,
+    ...params,
+  });
+
+  for (let attempt = 0; attempt <= retries; attemp++) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+      const response = await fetch(`${BASE_URL}${endpoint}?${queryParams}`, {
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new ApiError(
+          `HTTP: ${response.status}: ${response.statusText}`,
+          response.status,
+          endpoint,
+        );
+      }
+
+      return await response.json();
+    } catch (error) {
+      const isLastAttempt = attempt === retries - 1;
+      const shouldRetry =
+        error.name === "AbortError" ||
+        error.message.includes("fetch") ||
+        (error instanceof APIError && error.statusCode >= 500);
+
+      if (!shouldRetry || isLastAttempt) {
+        throw error instanceof APIError
+          ? error
+          : new APIError(`Network error: ${error.message}`, 0, endpoint);
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 2 ** attempt * 1000));
+    }
   }
 }
 
 export async function getMovieById(id) {
-  try {
-    const response = await fetchFromAPI(`/3/movie/${id}`, {
-      api_key: API_KEY,
-    });
-    return await response.json();
-  } catch (e) {
-    console.log(`Error fetching a movie by id: ${e}`);
-    throw e;
+  if (!id) {
+    throw new APIError("Movie ID is required", 400, "/movie/:id");
   }
+
+  return fetchFromAPI(`/3/movie/${id}`);
 }
 
 export async function getAllMovies(year, page = 1) {
-  try {
-    const response = await fetchFromAPI("/3/discover/movie", {
-      api_key: API_KEY,
-      primary_release_year: year,
-      page: page,
-    });
-    return await response.json();
-  } catch (e) {
-    console.log(`Error file fetching all movies: ${e}`);
-    throw e;
+  if (!year || year < 1900 || year > new Date().getFullYear() + 1) {
+    throw new APIError(`Valid year is required`, 400, "/movie/:year");
   }
+
+  return fetchFromAPI("/3/discover/movie", {
+    primary_release_year: year,
+    page: Math.max(1, Math.floor(page)),
+  });
 }
 
 export async function getPopularOrLatestMovies(
-  movieType = "popular" | "now_playing",
+  movieType = "popular",
   page = 1,
 ) {
-  try {
-    const response = await fetchFromAPI("/3/movie/" + movieType, {
-      api_key: API_KEY,
-      page: page,
-    });
-    return await response.json();
-  } catch (e) {
-    console.log(`Error file fetching all movies: ${e}`);
-    throw e;
+  const validTypes = ["popular", "now_playing", "latest"];
+  if (!validTypes.includes(movieType)) {
+    throw new APIError(
+      `Invalid movie type. Must be one of: ${validTypes.join(", ")}`,
+      400,
+      `/movie/${movieType}`,
+    );
   }
+
+  return fetchFromAPI(`/3/movie/${movieType}`, { page });
 }
 
-export async function searchMovies(name) {
-  clearTimeout(debounceTimer);
-  if (name) {
-    return new Promise((resolve, reject) => {
-      debounceTimer = setTimeout(async () => {
-        try {
-          const response = await fetchFromAPI("/3/search/movie", {
-            api_key: API_KEY,
-            query: name,
-          });
-
-          resolve(response.json());
-        } catch (e) {
-          console.log(`Error fetching search results: ${e}`);
-          reject(e);
-          throw e;
-        }
-      }, 1000);
-    });
+async function searchMoviesImmediate(query) {
+  if (!query) {
   }
+  return fetchFromAPI("/3/search/movie", { query });
 }
+
+export const searchMoviesWithDebounce = debounce(searchMoviesImmediate, 1000);
