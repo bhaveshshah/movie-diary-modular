@@ -38,15 +38,15 @@ function renderFavState(button, movieId) {
 export function createMovieCard(movie, containerId) {
   const movieCard = document.createElement("div");
   movieCard.classList.add(
-    'bg-white',
-    'rounded-lg',
-    'shadow-md',
-    'min-w-[300px]',
-    'w-[300px]',
-    'hover:scale-102',
-    'transition-transform',
-    'duration-300',
-    'relative'
+    "bg-white",
+    "rounded-lg",
+    "shadow-md",
+    "min-w-[300px]",
+    "w-[300px]",
+    "hover:scale-102",
+    "transition-transform",
+    "duration-300",
+    "relative",
   );
 
   const favButton = document.createElement("button");
@@ -101,7 +101,13 @@ export function createMovieCard(movie, containerId) {
   movieInfo.innerHTML = `
   <strong>Popularity rate:</strong> ${movie.popularity}<br>
   <strong>Synopsis:</strong> ${movie.overview}`; // info(movie);
-  movieInfo.classList.add("text-gray-700", "text-sm", "line-clamp-3", "p-4", "pt-0");
+  movieInfo.classList.add(
+    "text-gray-700",
+    "text-sm",
+    "line-clamp-3",
+    "p-4",
+    "pt-0",
+  );
 
   movieCard.appendChild(movieImage);
   movieCard.appendChild(movieName);
