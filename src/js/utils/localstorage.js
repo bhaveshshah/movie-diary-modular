@@ -1,4 +1,4 @@
-const FAVOURITE_KEY = "favourite";
+export const FAVOURITE_KEY = "favourite";
 
 export function getData(key) {
   try {

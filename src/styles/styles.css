@@ -1,7 +1,3 @@
-.main-background {
-  background: linear-gradient(-45deg, #141e30, #1058a8, #1a1a2e, #e93232);
-}
-
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
     display: none;
